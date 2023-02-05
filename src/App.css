@@ -1,0 +1,56 @@
+body {
+  text-align: center;
+  background-color: purple;
+  justify-content: center;
+}
+
+
+.board {
+  height: 630px;
+  width: 630px;
+  background-color: white;
+  border: 10px solid whitesmoke;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-radius: 20px;
+}
+
+
+.row{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.game-cell{
+  height: 70px;
+  width:70px;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+.white-circle,
+.red-circle,
+.yellow-circle{
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  margin: 5px;
+  border: 5px solid black;
+}
+
+.white-circle {
+  background-color: white;
+}
+.red-cirle{
+  background-color: red;
+  transition: background-color 0.5s;
+}
+.yellow-cirlce {
+  background-color: yellow;
+  transition: background-color 0.5s;
+}
