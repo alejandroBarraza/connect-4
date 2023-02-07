@@ -1,7 +1,7 @@
 import React from 'react'
 import { useReducer, useState, useEffect } from 'react'
 import { gameReducer } from '../reducers/gameReducer'
-import { checkForWin, CloneBoard, generateNewBoard } from '../utils/utils'
+import { checkForWin, CloneBoard } from '../utils/utils'
 import { Button } from './Button'
 import { PlayerComponet } from './PlayerComponet'
 import { Row } from './Row'
@@ -27,6 +27,7 @@ const initialGameState = {
 
 export const Connect4 = () => {
     const [gameState, dispatchGameState] = useReducer(gameReducer, initialGameState)
+    const [hasBeenReset, setHasBeenReset] = useState(false)
     const [showWinnerMessage, setShowWinnerMessage] = useState(false)
 
     useEffect(() => {
@@ -36,6 +37,7 @@ export const Connect4 = () => {
     }, [gameState.gameOver])
 
     const play = (colIndex) => {
+        console.log('hola')
         if (gameState.gameOver) {
             return
         }
@@ -92,7 +94,10 @@ export const Connect4 = () => {
             <div className='middle-section'>
                 <button
                     className='button'
-                    onClick={() => dispatchGameState({ type: 'newGame', initialGameState })}
+                    onClick={() => {
+                        setHasBeenReset(true)
+                        dispatchGameState({ type: 'newGame', initialGameState })
+                    }}
                 >
                     Reset
                 </button>
@@ -108,7 +113,7 @@ export const Connect4 = () => {
                         ))}
                     </div>
                 )}
-                <Timer gameOver={gameState.gameOver} />
+                <Timer hasBeenReset={hasBeenReset} />
             </div>
             <div className='right-section'>
                 <PlayerComponet player={'PLAYER 2'} counter={gameState.player2Counter} />

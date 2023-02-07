@@ -1,8 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react'
 
-export const Timer = ({ gameOver }) => {
+export const Timer = ({ hasBeenReset }) => {
     const [timer, setTimer] = useState(0)
-    if (gameOver) {
+    if (hasBeenReset) {
         setTimer(0)
     }
 
