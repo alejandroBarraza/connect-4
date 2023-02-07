@@ -36,37 +36,51 @@ export const Connect4 = () => {
     }, [gameState.gameOver])
 
     const play = (colIndex) => {
-        if (gameState.gameOver) return
-
-        let board = CloneBoard(gameState.board)
-        for (let row = 5; row >= 0; row--) {
-            if (board[row][colIndex] === null) {
-                // find the first empty cell in the column
-                board[row][colIndex] = gameState.currentPlayer
-                gameState.currentPlayer === gameState.player1
-                    ? dispatchGameState({ type: 'updatePlayer1Counter' })
-                    : dispatchGameState({ type: 'updatePlayer2Counter' })
-                break
-            }
+        if (gameState.gameOver) {
+            return
         }
 
-        let result = checkForWin(board)
-        if (result == 1) {
-            // player 1 wins
-            dispatchGameState({ type: 'gameOver', message: 'Player Red wins' })
-        } else if (result == 2) {
-            // player 2 wins
-            dispatchGameState({ type: 'gameOver', message: 'Player Yellow wins' })
-        } else if (result == 'draw') {
-            // draw
-            dispatchGameState({ type: 'gameOver', message: 'Draw' })
-        } else {
-            // no winner yet
-            const nextPlayer =
-                gameState.currentPlayer === gameState.player1
-                    ? gameState.player2
-                    : gameState.player1
-            dispatchGameState({ type: 'togglePlayer', nextPlayer, board })
+        let board = CloneBoard(gameState.board)
+        findEmptyTile(board, colIndex)
+
+        const gameResult = checkForWin(board)
+        switch (gameResult) {
+            case 1:
+                dispatchGameState({ type: 'gameOver', message: 'Player Red wins' })
+                break
+            case 2:
+                dispatchGameState({ type: 'gameOver', message: 'Player Yellow wins' })
+                break
+            case 'draw':
+                dispatchGameState({ type: 'gameOver', message: 'Draw' })
+                break
+            default:
+                toggleNextPlayer(board)
+                break
+        }
+    }
+
+    const updateCurrentPlayerCounter = () => {
+        gameState.currentPlayer === gameState.player1
+            ? dispatchGameState({ type: 'updatePlayer1Counter' })
+            : dispatchGameState({ type: 'updatePlayer2Counter' })
+    }
+
+    const toggleNextPlayer = (board) => {
+        const nextPlayer =
+            gameState.currentPlayer === gameState.player1 ? gameState.player2 : gameState.player1
+        dispatchGameState({ type: 'togglePlayer', nextPlayer, board })
+    }
+
+    const findEmptyTile = (board, colIndex) => {
+        let row = 5
+        while (row >= 0) {
+            if (board[row][colIndex] === null) {
+                board[row][colIndex] = gameState.currentPlayer
+                updateCurrentPlayerCounter()
+                break
+            }
+            row--
         }
     }
 
