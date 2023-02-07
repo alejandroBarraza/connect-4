@@ -26,6 +26,17 @@ export const gameReducer = (state, action) => {
                 message: action.message,
             }
 
+        case 'updatePlayer1Counter':
+            return {
+                ...state,
+                player1Counter: state.player1Counter + 1,
+            }
+        case 'updatePlayer2Counter':
+            return {
+                ...state,
+                player2Counter: state.player2Counter + 1,
+            }
+
         default:
             throw Error(`Action "${action.type}" not valid action.`)
     }
