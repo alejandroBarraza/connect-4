@@ -2,7 +2,10 @@ import React from 'react'
 import { useReducer, useState, useEffect } from 'react'
 import { gameReducer } from '../reducers/gameReducer'
 import { checkForWin, CloneBoard, generateNewBoard } from '../utils/utils'
+import { Button } from './Button'
+import { PlayerComponet } from './PlayerComponet'
 import { Row } from './Row'
+import { Timer } from './Timer'
 //3
 const initialGameState = {
     player1: 1,
@@ -18,6 +21,8 @@ const initialGameState = {
     ],
     gameOver: false,
     message: '',
+    player1Counter: 0,
+    player2Counter: 0,
 }
 
 export const Connect4 = () => {
@@ -38,6 +43,9 @@ export const Connect4 = () => {
             if (board[row][colIndex] === null) {
                 // find the first empty cell in the column
                 board[row][colIndex] = gameState.currentPlayer
+                gameState.currentPlayer === gameState.player1
+                    ? dispatchGameState({ type: 'updatePlayer1Counter' })
+                    : dispatchGameState({ type: 'updatePlayer2Counter' })
                 break
             }
         }
@@ -63,23 +71,34 @@ export const Connect4 = () => {
     }
 
     return (
-        <div>
-            <button onClick={() => dispatchGameState({ type: 'newGame', initialGameState })}>
-                Reset
-            </button>
-
-            {showWinnerMessage ? (
-                <div>
-                    <h1>winner: {gameState.message}</h1>
-                    <p>for play again, click reset!</p>
-                </div>
-            ) : (
-                <div className='board'>
-                    {gameState.board.map((row, rowIndex) => (
-                        <Row key={rowIndex} row={row} play={play} />
-                    ))}
-                </div>
-            )}
+        <div className='container'>
+            <div className='left-section'>
+                <PlayerComponet player={'PLAYER 1'} counter={gameState.player1Counter} />
+            </div>
+            <div className='middle-section'>
+                <button
+                    className='button'
+                    onClick={() => dispatchGameState({ type: 'newGame', initialGameState })}
+                >
+                    Reset
+                </button>
+                {showWinnerMessage ? (
+                    <div>
+                        <h1>winner: {gameState.message}</h1>
+                        <p>for play again, click reset!</p>
+                    </div>
+                ) : (
+                    <div className='board'>
+                        {gameState.board.map((row, rowIndex) => (
+                            <Row key={rowIndex} row={row} play={play} />
+                        ))}
+                    </div>
+                )}
+                <Timer gameOver={gameState.gameOver} />
+            </div>
+            <div className='right-section'>
+                <PlayerComponet player={'PLAYER 2'} counter={gameState.player2Counter} />
+            </div>
         </div>
     )
 }
