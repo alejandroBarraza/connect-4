@@ -13,7 +13,8 @@ export const Timer = () => {
     const memoizedCounter = useMemo(() => timer, [timer])
     return (
         <div className='timer-container'>
-            <span>{memoizedCounter}S</span>
+            <h6>Game Time</h6>
+            <span>{memoizedCounter} s</span>
         </div>
     )
 }
