@@ -12,8 +12,9 @@ next steps:
 
 
 ## Demo
+link : https://incandescent-croissant-3dc14e.netlify.app/
 
-Link provided when UI/UX is completed [02/08]
+next update: socket.io for multiplayer
 
 
 ## Deployment
