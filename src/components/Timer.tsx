@@ -1,10 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react'
 
-export const Timer = ({ hasBeenReset }) => {
+export const Timer = () => {
     const [timer, setTimer] = useState(0)
-    if (hasBeenReset) {
-        setTimer(0)
-    }
 
     useEffect(() => {
         const intervalId = setInterval(() => {
