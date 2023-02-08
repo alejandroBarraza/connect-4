@@ -4,6 +4,7 @@ import { gameReducer } from '../reducers/gameReducer'
 import { checkForWin, CloneBoard } from '../utils/utils'
 import { Button } from './Button'
 import { PlayerComponet } from './PlayerComponet'
+import { Result } from './Result'
 import { Row } from './Row'
 import { Timer } from './Timer'
 //3
@@ -27,7 +28,6 @@ const initialGameState = {
 
 export const Connect4 = () => {
     const [gameState, dispatchGameState] = useReducer(gameReducer, initialGameState)
-    const [hasBeenReset, setHasBeenReset] = useState(false)
     const [showWinnerMessage, setShowWinnerMessage] = useState(false)
 
     useEffect(() => {
@@ -37,10 +37,7 @@ export const Connect4 = () => {
     }, [gameState.gameOver])
 
     const play = (colIndex) => {
-        console.log('hola')
-        if (gameState.gameOver) {
-            return
-        }
+        if (gameState.gameOver) return
 
         let board = CloneBoard(gameState.board)
         findEmptyTile(board, colIndex)
@@ -48,17 +45,19 @@ export const Connect4 = () => {
         const gameResult = checkForWin(board)
         switch (gameResult) {
             case 1:
-                dispatchGameState({ type: 'gameOver', message: 'Player Red wins' })
+                dispatchGameState({ type: 'gameOver', message: 'Player Red', board })
                 break
             case 2:
-                dispatchGameState({ type: 'gameOver', message: 'Player Yellow wins' })
+                dispatchGameState({ type: 'gameOver', message: 'Player Yellow', board })
                 break
             case 'draw':
-                dispatchGameState({ type: 'gameOver', message: 'Draw' })
+                dispatchGameState({ type: 'gameOver', message: 'Draw', board })
                 break
             default:
                 toggleNextPlayer(board)
                 break
+
+            // its game over and clicked a cell again
         }
     }
 
@@ -86,6 +85,15 @@ export const Connect4 = () => {
         }
     }
 
+    const resetGame = () => {
+        dispatchGameState({
+            type: 'newGame',
+            initialGameState,
+            board: CloneBoard(initialGameState.board),
+        })
+        setShowWinnerMessage(!showWinnerMessage)
+    }
+
     return (
         <div className='container'>
             <div className='left-section'>
@@ -93,27 +101,19 @@ export const Connect4 = () => {
             </div>
             <div className='middle-section'>
                 <button
+                    style={{ display: gameState.gameOver ? 'block' : 'none' }}
                     className='button'
-                    onClick={() => {
-                        setHasBeenReset(true)
-                        dispatchGameState({ type: 'newGame', initialGameState })
-                    }}
+                    onClick={resetGame}
                 >
-                    Reset
+                    New Game
                 </button>
-                {showWinnerMessage ? (
-                    <div>
-                        <h1>winner: {gameState.message}</h1>
-                        <p>for play again, click reset!</p>
-                    </div>
-                ) : (
-                    <div className='board'>
-                        {gameState.board.map((row, rowIndex) => (
-                            <Row key={rowIndex} row={row} play={play} />
-                        ))}
-                    </div>
-                )}
-                <Timer hasBeenReset={hasBeenReset} />
+
+                <div className='board'>
+                    {gameState?.board?.map((row, rowIndex) => (
+                        <Row key={rowIndex} row={row} play={play} />
+                    ))}
+                </div>
+                {gameState.gameOver ? <Result winner={gameState.message} /> : <Timer />}
             </div>
             <div className='right-section'>
                 <PlayerComponet player={'PLAYER 2'} counter={gameState.player2Counter} />
