@@ -3,6 +3,7 @@ export const gameReducer = (state, action) => {
         case 'newGame':
             return {
                 ...action.initialGameState,
+                board: action.board,
             }
 
         case 'togglePlayer':
