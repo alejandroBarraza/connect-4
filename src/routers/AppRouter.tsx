@@ -7,8 +7,9 @@ export const AppRouter = () => {
     return (
         <Router>
             <Routes>
-                <Route path='/' element={<Room />} />
-                <Route path='/connect4/:gameId' element={<Connect4 />} />
+                {/* <Route path='/' element={<Room />} /> */}
+                {/* <Route path='/connect4/:gameId' element={<Connect4 />} /> */}
+                <Route path='/connect4' element={<Connect4 />} />
             </Routes>
         </Router>
     )
