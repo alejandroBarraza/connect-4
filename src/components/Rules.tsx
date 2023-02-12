@@ -1,6 +1,7 @@
 import React from 'react'
 
 export const Rules = () => {
+    console.log('hey!')
     return (
         <div className='rules'>
             <h2>Rules</h2>

@@ -1,11 +1,13 @@
 
 import './App.css'
-import { Connect4 } from './components/Connect4';
-
+import { AppRouter } from "./routers/AppRouter";
 
 export function App() {
+
+
   return (
-    <Connect4/>
+    <AppRouter/>
+    
   )
 
 }
